@@ -1,5 +1,5 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Optional, Output, Self } from '@angular/core';
+import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Guid } from 'guid-typescript';
 
@@ -8,16 +8,24 @@ import { Guid } from 'guid-typescript';
   templateUrl: './input-text.component.html',
   styleUrls: ['./input-text.component.scss'],
   providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => InputTextComponent),
-      multi: true
-    }
+    // I will use ngControl in the constructor in place of this code
+    // {
+    //   provide: NG_VALUE_ACCESSOR,
+    //   useExisting: forwardRef(() => InputTextComponent),
+    //   multi: true
+    // }
   ]
 })
 export class InputTextComponent implements OnInit, ControlValueAccessor {
 
-  constructor() { }
+  constructor(
+    @Self() @Optional()
+    private ngControl: NgControl
+  ) {
+    if (this.ngControl) {
+      this.ngControl.valueAccessor = this;
+    }
+  }
 
   @Input() public type: 'text' | 'password' | 'email' | 'search' | 'tel' | 'url' = 'text';
   @Input() public name: string = '';
