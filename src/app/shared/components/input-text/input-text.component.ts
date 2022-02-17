@@ -1,13 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-input-text',
   templateUrl: './input-text.component.html',
-  styleUrls: ['./input-text.component.scss']
+  styleUrls: ['./input-text.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputTextComponent),
+      multi: true
+    }
+  ]
 })
-export class InputTextComponent implements OnInit {
+export class InputTextComponent implements OnInit, ControlValueAccessor {
 
   constructor() { }
 
@@ -18,25 +26,39 @@ export class InputTextComponent implements OnInit {
   @Input() public autocomplete : string|null = null;
 
   private _value: string|null = null;
-  @Input() public set value(value: string|null) {
-    if (this._value != value) {
-      this._value = value;
-      this.valueChange.emit(this._value);
-      console.log(this._value);
-    }
-  };
   public get value(): string|null {
     return this._value;
   }
-
+  @Input() public set value(value: string|null) {
+    this.writeValue(value);
+  };
   @Output() public valueChange = new EventEmitter<string|null>();
 
   public readonly id: string = Guid.create().toString();
+  public onChange = (_: any) => {}
+  public onTouched = (_: any) => {}
 
   ngOnInit(): void {
   }
 
-  public onChange(event: any): void {
-    this.value = event.target.value;
+  writeValue(value: string|null): void {
+    value = value ?? null;
+    if (this.value != value) {
+      this._value = value;
+      this.onChange(this.value);
+      this.valueChange.emit(this.value);
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    throw new Error('Method not implemented.');
   }
 }
