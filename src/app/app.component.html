@@ -1,49 +1,52 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <fieldset>
-    <legend>Form</legend>
-    <div>
-      <label for="name">Name:</label>
-      <app-input-text
-        type="text"
-        formControlName="name"
-        [required]="true"
-        placeholder="complete with your name">
-      </app-input-text>
-      <p>{{ frmName }}</p>
-    </div>
-    <div>
-      <label for="email">Email:</label>
-      <app-input-text
-        type="email"
-        name="email"
-        formControlName="email"
-        [required]="true"
-        autocomplete="username"
-        placeholder="complete with your e-mail">
-      </app-input-text>
-      <p>{{ frmEmail }}</p>
-    </div>
-    <div>
-      <label for="password">Password:</label>
-      <app-input-text
-        type="password"
-        formControlName="password"
-        [required]="true"
-        autocomplete="new-password"
-        placeholder="complete with a password">
-      </app-input-text>
-      <p>{{ frmPassword }}</p>
-    </div>
-    <div>
-      <label for="confirm-password">Confirm Password:</label>
-      <app-input-text
-        type="password"
-        formControlName="confirmPassword"
-        autocomplete="new-password"
-        [required]="true"
-        placeholder="Confirm the password">
-      </app-input-text>
-      <p>{{ frmConfirmPassword }}</p>
-    </div>
-  </fieldset>
-</form>
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <fieldset>
+      <legend>Form</legend>
+      <div class="mb-3">
+        <label class="form-label">Name:</label>
+        <app-input-text
+          type="text"
+          formControlName="name"
+          [required]="true"
+          placeholder="complete with your name">
+        </app-input-text>
+        <p class="fs-6">Output: {{ frmName }}</p>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email:</label>
+        <app-input-text
+          type="email"
+          name="email"
+          formControlName="email"
+          [required]="true"
+          autocomplete="username"
+          placeholder="complete with your e-mail">
+        </app-input-text>
+        <p class="fs-6">Output: {{ frmEmail }}</p>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password:</label>
+        <app-input-text
+          type="password"
+          formControlName="password"
+          [required]="true"
+          autocomplete="new-password"
+          placeholder="complete with a password">
+        </app-input-text>
+        <p class="fs-6">Output: {{ frmPassword }}</p>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Confirm Password:</label>
+        <app-input-text
+          type="password"
+          formControlName="confirmPassword"
+          autocomplete="new-password"
+          [required]="true"
+          placeholder="Confirm the password">
+        </app-input-text>
+        <p class="fs-6">Output: {{ frmConfirmPassword }}</p>
+      </div>
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
