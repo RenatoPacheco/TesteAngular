@@ -4,40 +4,49 @@
     <div>
       <label for="name">Name:</label>
       <app-input-text
+        [(value)]="frmName"
+        (valueChange)="frmName = $event"
         type="text"
         name="name"
         [required]="true"
         placeholder="complete with your name">
       </app-input-text>
+      <p>{{ frmName }}</p>
     </div>
     <div>
       <label for="email">Email:</label>
       <app-input-text
+        [(value)]="frmEmail"
         type="email"
         name="email"
         [required]="true"
         placeholder="complete with your e-mail">
       </app-input-text>
+      <p>{{ frmEmail }}</p>
     </div>
     <div>
       <label for="password">Password:</label>
       <app-input-text
+        [(value)]="frmPassword"
         type="password"
         name="password"
         [required]="true"
         autocomplete="new-password"
         placeholder="complete with a password">
       </app-input-text>
+      <p>{{ frmPassword }}</p>
     </div>
     <div>
       <label for="confirm-password">Confirm Password:</label>
       <app-input-text
+        [(value)]="frmConfirmPassword"
         type="password"
         name="confirm-password"
         autocomplete="new-password"
         [required]="true"
         placeholder="Confirm the password">
       </app-input-text>
+      <p>{{ frmConfirmPassword }}</p>
     </div>
   </fieldset>
 </form>

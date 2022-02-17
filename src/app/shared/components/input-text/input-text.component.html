@@ -4,4 +4,7 @@
   [attr.autocomplete]="autocomplete"
   [attr.placeholder]="placeholder"
   [attr.name]="name"
-  [required]="required || null">
+  [required]="required || null"
+  [value]="value"
+  (change)="onChange($event)"
+  (keyup)="onChange($event)">
