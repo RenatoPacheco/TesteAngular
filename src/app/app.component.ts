@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -6,12 +7,37 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  constructor(
+    private formBuilder: FormBuilder,
+  ) {
+    this.form = this.formBuilder.group({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    });
+  }
+
+  form: FormGroup;
+
   title = 'TesteAngular';
 
-  public frmName: string|null = null;
-  public frmEmail: string|null = null;
-  public frmPassword: string|null = null;
-  public frmConfirmPassword: string|null = null;
+  public get frmName(): string|null {
+    return this.form.get('name')?.value ?? null;
+  }
+
+  public get frmEmail(): string|null {
+    return this.form.get('email')?.value ?? null;
+  }
+
+  public get frmPassword(): string|null {
+    return this.form.get('password')?.value ?? null;
+  }
+
+  public get frmConfirmPassword(): string|null {
+    return this.form.get('confirmPassword')?.value ?? null;
+  };
 
   public submit(): void {
 

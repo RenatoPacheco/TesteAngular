@@ -1,13 +1,11 @@
-<form (ngSubmit)="submit()">
+<form [formGroup]="form" (ngSubmit)="submit()">
   <fieldset>
     <legend>Form</legend>
     <div>
       <label for="name">Name:</label>
       <app-input-text
-        [(value)]="frmName"
-        (valueChange)="frmName = $event"
         type="text"
-        name="name"
+        formControlName="name"
         [required]="true"
         placeholder="complete with your name">
       </app-input-text>
@@ -16,9 +14,8 @@
     <div>
       <label for="email">Email:</label>
       <app-input-text
-        [(value)]="frmEmail"
         type="email"
-        name="email"
+        formControlName="email"
         [required]="true"
         placeholder="complete with your e-mail">
       </app-input-text>
@@ -27,9 +24,8 @@
     <div>
       <label for="password">Password:</label>
       <app-input-text
-        [(value)]="frmPassword"
         type="password"
-        name="password"
+        formControlName="password"
         [required]="true"
         autocomplete="new-password"
         placeholder="complete with a password">
@@ -39,9 +35,8 @@
     <div>
       <label for="confirm-password">Confirm Password:</label>
       <app-input-text
-        [(value)]="frmConfirmPassword"
         type="password"
-        name="confirm-password"
+        formControlName="confirmPassword"
         autocomplete="new-password"
         [required]="true"
         placeholder="Confirm the password">
