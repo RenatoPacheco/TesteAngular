@@ -15,8 +15,10 @@
       <label for="email">Email:</label>
       <app-input-text
         type="email"
+        name="email"
         formControlName="email"
         [required]="true"
+        autocomplete="username"
         placeholder="complete with your e-mail">
       </app-input-text>
       <p>{{ frmEmail }}</p>

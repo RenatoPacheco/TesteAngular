@@ -20,10 +20,12 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   constructor() { }
 
   @Input() public type: 'text' | 'password' | 'email' | 'search' | 'tel' | 'url' = 'text';
-  @Input() public name: string|null = null;
-  @Input() public required: boolean|null = null;
-  @Input() public placeholder: string|null = null;
-  @Input() public autocomplete : string|null = null;
+  @Input() public name: string = '';
+  @Input() public placeholder: string = '';
+  @Input() public autocomplete : string = '';
+  @Input() public required: boolean = false;
+  @Input() public readonly : boolean = false;
+  @Input() public disabled : boolean = false;
 
   private _value: string|null = null;
   public get value(): string|null {
@@ -42,7 +44,7 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(value: string|null): void {
-    value = value ?? null;
+    value = value?.toString().trim() ?? null;
     if (this.value != value) {
       this._value = value;
       this.onChange(this.value);
@@ -59,6 +61,6 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    throw new Error('Method not implemented.');
+    this.disabled = isDisabled;
   }
 }

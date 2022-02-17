@@ -1,6 +1,9 @@
 <input
   [type]="type"
-  [attr.id]="id"
-  [attr.autocomplete]="autocomplete"
-  [attr.placeholder]="placeholder"
+  [attr.id]="id || null"
+  [attr.autocomplete]="autocomplete || null"
+  [attr.placeholder]="placeholder || null"
+  [attr.name]="name || null"
+  [readonly]="readonly"
+  [disabled]="disabled"
   [(ngModel)]="value">

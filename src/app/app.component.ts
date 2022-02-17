@@ -12,11 +12,12 @@ export class AppComponent {
     private formBuilder: FormBuilder,
   ) {
     this.form = this.formBuilder.group({
-      name: '',
+      name: '  Jony    ',
       email: '',
       password: '',
       confirmPassword: ''
     });
+    this.form.get('name')?.disable();
   }
 
   form: FormGroup;
