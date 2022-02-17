@@ -3,8 +3,8 @@
     <fieldset>
       <legend>Form</legend>
       <div class="mb-3">
-        <label class="form-label">Name:</label>
         <app-input-text
+          label="Name"
           type="text"
           formControlName="name"
           [required]="true"
@@ -13,8 +13,8 @@
         <p class="fs-6">Output: {{ frmName }}</p>
       </div>
       <div class="mb-3">
-        <label class="form-label">Email:</label>
         <app-input-text
+          label="E-mail"
           type="email"
           name="email"
           formControlName="email"
@@ -25,8 +25,8 @@
         <p class="fs-6">Output: {{ frmEmail }}</p>
       </div>
       <div class="mb-3">
-        <label class="form-label">Password:</label>
         <app-input-text
+          label="Password"
           type="password"
           formControlName="password"
           [required]="true"
@@ -36,8 +36,8 @@
         <p class="fs-6">Output: {{ frmPassword }}</p>
       </div>
       <div class="mb-3">
-        <label class="form-label">Confirm Password:</label>
         <app-input-text
+          label="Confirm Password"
           type="password"
           formControlName="confirmPassword"
           autocomplete="new-password"

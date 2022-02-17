@@ -1,4 +1,10 @@
+<label
+  *ngIf="hasLabel()"
+  class="form-label"
+  [innerHtml]="label">
+</label>
 <input
+  class="form-control"
   [type]="type"
   [attr.id]="id || null"
   [attr.autocomplete]="autocomplete || null"

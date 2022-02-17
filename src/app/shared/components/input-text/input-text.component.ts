@@ -29,11 +29,32 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
 
   @Input() public type: 'text' | 'password' | 'email' | 'search' | 'tel' | 'url' = 'text';
   @Input() public name: string = '';
+  @Input() public label: string = '';
   @Input() public placeholder: string = '';
   @Input() public autocomplete : string = '';
   @Input() public required: boolean = false;
   @Input() public readonly : boolean = false;
-  @Input() public disabled : boolean = false;
+
+  private _disabled: boolean|null = null;
+  public get disabled(): boolean {
+    return this.ngControl?.disabled ?? this._disabled ?? false;
+  }
+  @Input() public set disabled(value: boolean) {
+    value = (/true/i).test(`${value}`);
+    if (value !== this._disabled) {
+      if (this._disabled) {
+        this.ngControl.control?.disable();
+      } else {
+        this.ngControl.control?.enable();
+      }
+      if (value !== this._disabled) {
+        this._disabled = value;
+        this.disabledChange.emit(this._disabled);
+        console.log(`disabled direct: ${this._disabled}`);
+      }
+    }
+  }
+  @Output() public disabledChange = new EventEmitter<boolean>();
 
   private _value: string|null = null;
   public get value(): string|null {
@@ -49,9 +70,14 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   public onTouched = (_: any) => {}
 
   ngOnInit(): void {
+
   }
 
-  writeValue(value: string|null): void {
+  public hasLabel(): boolean {
+    return this.label ? true : false;
+  }
+
+  public writeValue(value: string|null): void {
     value = value?.toString().trim() ?? null;
     if (this.value != value) {
       this._value = value;
@@ -60,15 +86,19 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  registerOnChange(fn: any): void {
+  public registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  public registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  public setDisabledState?(isDisabled: boolean): void {
+    if (this._disabled !== isDisabled) {
+      this._disabled = isDisabled;
+      this.disabledChange.emit(this._disabled);
+      console.log(`disabled indirect: ${this._disabled}`);
+    }
   }
 }
