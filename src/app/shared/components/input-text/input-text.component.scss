@@ -1,0 +1,22 @@
+.button-error {
+  float: right;
+  margin-top: -37px;
+  height: 37px;
+  width: 37px;
+  opacity: 0;
+}
+
+.button-clear {
+  background-color: transparent;
+  border: none;
+  float: right;
+  margin-top: -37px;
+  height: 37px;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+  &.has-feedback {
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: 37px;
+  }
+}

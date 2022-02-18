@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +12,25 @@ export class AppComponent {
     private formBuilder: FormBuilder,
   ) {
     this.form = this.formBuilder.group({
-      name: '  Jony    ',
-      email: '',
-      password: '',
-      confirmPassword: ''
+      name: ['', [
+        Validators.required,
+        Validators.minLength(3),
+      ]],
+      email: ['', [
+        Validators.required,
+        Validators.email
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(16)
+      ]],
+      confirmPassword: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(16)
+      ]],
     });
-    this.form.get('name')?.disable();
   }
 
   form: FormGroup;
@@ -41,6 +54,24 @@ export class AppComponent {
   };
 
   public submit(): void {
-
+    const name = this.form.get('name');
+    const timeout = 5000;
+    console.log('start submit');
+    if (name?.disabled) {
+      name?.enable();
+      console.log('start await');
+      setTimeout(() => {
+        console.log('end await');
+        name?.enable();
+      }, timeout);
+    } else {
+      name?.disable();
+      console.log('start await');
+      setTimeout(() => {
+        console.log('end await');
+        name?.disable();
+      }, timeout);
+    }
+    console.log('end submit');
   }
 }

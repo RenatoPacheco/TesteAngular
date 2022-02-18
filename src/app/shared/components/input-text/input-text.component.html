@@ -1,10 +1,14 @@
 <label
+  [for]="id"
   *ngIf="hasLabel()"
   class="form-label"
   [innerHtml]="label">
 </label>
 <input
+  tabindex="0"
   class="form-control"
+  [class.is-invalid]="hasFeedbackError()"
+  [class.is-valid]="hasFeedbackSuccess()"
   [type]="type"
   [attr.id]="id || null"
   [attr.autocomplete]="autocomplete || null"
@@ -13,3 +17,21 @@
   [readonly]="readonly"
   [disabled]="disabled"
   [(ngModel)]="value">
+<button
+  *ngIf="hasFeedbackError()"
+  tabindex="0"
+  type="button"
+  (click)="showError()"
+  class="button-error"
+  title="click here to show error information" >
+  Info
+</button>
+<button
+  *ngIf="isNotEmpty()"
+  tabindex="0"
+  type="button"
+  (click)="clear()"
+  class="button-clear"
+  [class.has-feedback]="hasFeedback()">
+  <i class="bi-x-lg"></i>
+</button>

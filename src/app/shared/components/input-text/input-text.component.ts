@@ -1,5 +1,6 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Optional, Output, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ErrorMessageService } from '@app/shared/services';
 
 import { Guid } from 'guid-typescript';
 
@@ -20,7 +21,8 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
 
   constructor(
     @Self() @Optional()
-    private ngControl: NgControl
+    private ngControl: NgControl,
+    private errorMessageService: ErrorMessageService
   ) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
@@ -34,6 +36,8 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   @Input() public autocomplete : string = '';
   @Input() public required: boolean = false;
   @Input() public readonly : boolean = false;
+  @Input() public showFeedbackError : boolean = true;
+  @Input() public showFeedbackSuccess : boolean = false;
 
   private _disabled: boolean|null = null;
   public get disabled(): boolean {
@@ -42,15 +46,15 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   @Input() public set disabled(value: boolean) {
     value = (/true/i).test(`${value}`);
     if (value !== this._disabled) {
-      if (this._disabled) {
-        this.ngControl.control?.disable();
+      if (this.ngControl?.control) {
+        if (this._disabled) {
+          this.ngControl.control.disable();
+        } else {
+          this.ngControl.control.enable();
+        }
       } else {
-        this.ngControl.control?.enable();
-      }
-      if (value !== this._disabled) {
         this._disabled = value;
         this.disabledChange.emit(this._disabled);
-        console.log(`disabled direct: ${this._disabled}`);
       }
     }
   }
@@ -73,8 +77,57 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
 
   }
 
+  public clear(): void {
+    this.writeValue(null);
+  }
+
+  showError(): void {
+    if (this.ngControl?.control) {
+      const errors = this.ngControl.errors ?? null;
+      let error = 'No error';
+      if (errors) {
+        error = this.errorMessageService.getErrorValidatorList(errors)
+          .reduce((acc, cur) => `${acc}- ${cur}\n`, '');
+      }
+      alert(error);
+    }
+  }
+
+  isEmpty(): boolean {
+    return this.value ? false : true;
+  }
+
+  isNotEmpty(): boolean {
+    return this.value ? true : false;
+  }
+
   public hasLabel(): boolean {
     return this.label ? true : false;
+  }
+
+  public isValid(): boolean {
+    return (this.ngControl?.valid ?? true)
+      && (this.ngControl?.dirty ?? false);
+  }
+
+  public isInvalid(): boolean {
+    return (this.ngControl?.invalid ?? false)
+      && (this.ngControl?.dirty ?? false);
+  }
+
+  public hasFeedbackError(): boolean {
+    return this.showFeedbackError
+      && this.isInvalid();
+  }
+
+  public hasFeedbackSuccess(): boolean {
+    return this.showFeedbackSuccess
+      && this.isValid();
+  }
+
+  public hasFeedback(): boolean {
+    return this.hasFeedbackError()
+      || this.hasFeedbackSuccess();
   }
 
   public writeValue(value: string|null): void {
@@ -98,7 +151,6 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
     if (this._disabled !== isDisabled) {
       this._disabled = isDisabled;
       this.disabledChange.emit(this._disabled);
-      console.log(`disabled indirect: ${this._disabled}`);
     }
   }
 }
