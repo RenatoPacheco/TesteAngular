@@ -13,7 +13,8 @@ export class ErrorMessageService {
     if (values) {
       for (const key in values) {
         if (values.hasOwnProperty(key)) {
-          errors.push(this.getErrorValidator(key, values[key]));
+          const itens = this.getErrorValidator(key, values[key]).split('\n');
+          itens.forEach(item => errors.push(item));
         }
       }
     }
@@ -64,6 +65,12 @@ export class ErrorMessageService {
         break;
       case 'asyncValidator':
         error = `This field requires a valid ${value.name}`;
+        break;
+      case 'passwordValidator':
+        error = value.errors.join('\n');
+        break;
+      case 'confirmValidator':
+        error = `This field must be equal to field ${value.name}`
         break;
       default:
         error = `I do not know what is wrong: ${key}`;
