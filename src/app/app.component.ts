@@ -55,24 +55,10 @@ export class AppComponent {
   };
 
   public submit(): void {
-    const name = this.form.get('name');
-    const timeout = 5000;
-    console.log('start submit');
-    if (name?.disabled) {
-      name?.enable();
-      console.log('start await');
-      setTimeout(() => {
-        console.log('end await');
-        name?.enable();
-      }, timeout);
-    } else {
-      name?.disable();
-      console.log('start await');
-      setTimeout(() => {
-        console.log('end await');
-        name?.disable();
-      }, timeout);
-    }
-    console.log('end submit');
+    this.form.markAllAsTouched();
+  }
+
+  public reset(): void {
+    this.form.reset();
   }
 }

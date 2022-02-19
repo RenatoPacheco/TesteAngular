@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Optional, Output, Self } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ErrorMessageService } from '@app/shared/services';
 
@@ -28,6 +28,8 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
       this.ngControl.valueAccessor = this;
     }
   }
+
+  @ViewChild('element', { static: true }) private element!: ElementRef;
 
   @Input() public type: 'text' | 'password' | 'email' | 'search' | 'tel' | 'url' = 'text';
   @Input() public name: string = '';
@@ -60,35 +62,40 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   }
   @Output() public disabledChange = new EventEmitter<boolean>();
 
-  private _value: string|null = null;
-  public get value(): string|null {
+  private _value: string = '';
+  public get value(): string {
     return this._value;
   }
-  @Input() public set value(value: string|null) {
+  @Input() public set value(value: string) {
     this.writeValue(value);
   };
-  @Output() public valueChange = new EventEmitter<string|null>();
+  @Output() public valueChange = new EventEmitter<string>();
 
   public readonly id: string = Guid.create().toString();
   public onChange = (_: any) => {}
   public onTouched = (_: any) => {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
 
   }
 
   public clear(): void {
-    this.writeValue(null);
+    this.writeValue('');
     if (this.ngControl?.control) {
       this.ngControl.control.markAsPristine();
       this.ngControl.control.markAsUntouched();
     }
   }
 
-  showError(): void {
+  public clearAndFocus(): void {
+    this.clear();
+    this.element.nativeElement.focus();
+  }
+
+  public showError(): void {
     if (this.ngControl?.control) {
       const errors = this.ngControl.errors ?? null;
-      let error = 'No error';
+      let error = '- No error';
       if (errors) {
         error = this.errorMessageService.getErrorValidatorList(errors)
           .reduce((acc, cur) => `${acc}- ${cur}\n`, '');
@@ -97,11 +104,11 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  isEmpty(): boolean {
+  public isEmpty(): boolean {
     return this.value ? false : true;
   }
 
-  isNotEmpty(): boolean {
+  public isNotEmpty(): boolean {
     return this.value ? true : false;
   }
 
@@ -111,12 +118,14 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
 
   public isValid(): boolean {
     return (this.ngControl?.valid ?? true)
-      && (this.ngControl?.dirty ?? false);
+      && ((this.ngControl?.dirty ?? false)
+        || (this.ngControl?.touched ?? false));
   }
 
   public isInvalid(): boolean {
     return (this.ngControl?.invalid ?? false)
-      && (this.ngControl?.dirty ?? false);
+      && ((this.ngControl?.dirty ?? false)
+        || (this.ngControl?.touched ?? false));
   }
 
   public hasFeedbackError(): boolean {
@@ -134,12 +143,14 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
       || this.hasFeedbackSuccess();
   }
 
-  public writeValue(value: string|null): void {
-    value = value?.toString().trim() ?? null;
-    if (this.value != value) {
+  public writeValue(value: string): void {
+    value = value?.toString() ?? '';
+    if (this.value !== value) {
       this._value = value;
       this.onChange(this.value);
       this.valueChange.emit(this.value);
+    } else {
+      this.element.nativeElement.value = value;
     }
   }
 

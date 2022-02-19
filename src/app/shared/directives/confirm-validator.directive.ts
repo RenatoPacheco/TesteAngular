@@ -1,4 +1,4 @@
-import { Attribute, Directive, ElementRef, forwardRef } from '@angular/core';
+import { Attribute, Directive, forwardRef } from '@angular/core';
 import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
 
 @Directive({
@@ -21,9 +21,9 @@ export class ConfirmValidatorDirective implements Validator {
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    const currentValue = control?.value;
-    const compareValue = control.root.get(this.compare)?.value;
-    return currentValue === compareValue ? null : {
+    const currentValue = control?.value || null;
+    const compareValue = control.root.get(this.compare)?.value || null;
+    return currentValue === null && currentValue === compareValue ? null : {
       confirmValidator: {
         control: this.compare,
         name: this.name,
