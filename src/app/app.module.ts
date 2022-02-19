@@ -6,10 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InputTextModule } from '@app/shared/components';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PasswordValidatorDirective } from './shared/directives/password-validator.directive';
+import { ConfirmValidatorDirective } from './shared/directives/confirm-validator.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PasswordValidatorDirective,
+    ConfirmValidatorDirective
   ],
   imports: [
     BrowserModule,

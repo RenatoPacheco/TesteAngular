@@ -79,6 +79,10 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
 
   public clear(): void {
     this.writeValue(null);
+    if (this.ngControl?.control) {
+      this.ngControl.control.markAsPristine();
+      this.ngControl.control.markAsUntouched();
+    }
   }
 
   showError(): void {

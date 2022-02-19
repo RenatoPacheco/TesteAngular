@@ -1,5 +1,8 @@
+import { ConfirmValidatorDirective } from './shared/directives/confirm-validator.directive';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { PasswordValidatorDirective } from './shared/directives';
 
 @Component({
   selector: 'app-root',
@@ -22,13 +25,11 @@ export class AppComponent {
       ]],
       password: ['', [
         Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(16)
+        new PasswordValidatorDirective()
       ]],
       confirmPassword: ['', [
         Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(16)
+        new ConfirmValidatorDirective('password', 'Password')
       ]],
     });
   }
