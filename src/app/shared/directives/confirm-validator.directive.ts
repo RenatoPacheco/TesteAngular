@@ -23,7 +23,7 @@ export class ConfirmValidatorDirective implements Validator {
   validate(control: AbstractControl): ValidationErrors | null {
     const currentValue = control?.value || null;
     const compareValue = control.root.get(this.compare)?.value || null;
-    return currentValue === null && currentValue === compareValue ? null : {
+    return currentValue === null || currentValue === compareValue ? null : {
       confirmValidator: {
         control: this.compare,
         name: this.name,
