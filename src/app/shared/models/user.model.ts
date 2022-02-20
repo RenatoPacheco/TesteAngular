@@ -50,6 +50,7 @@ export class User implements IUser {
 }
 
 export class UserOrderBy {
+
   public static byName(a: IUser, b:IUser): number {
     const aCompare = a?.name ?? '';
     const bCompare = b?.name ?? '';
@@ -64,6 +65,7 @@ export class UserOrderBy {
 
     return 0;
   }
+
 }
 
 export class UserScopes {
