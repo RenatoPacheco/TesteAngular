@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { PasswordValidatorDirective } from './shared/directives';
+import { UserScopes } from './shared/models';
 
 @Component({
   selector: 'app-root',
@@ -15,18 +16,9 @@ export class AppComponent {
     private formBuilder: FormBuilder,
   ) {
     this.form = this.formBuilder.group({
-      name: ['', [
-        Validators.required,
-        Validators.minLength(3),
-      ]],
-      email: ['', [
-        Validators.required,
-        Validators.email
-      ]],
-      password: ['', [
-        Validators.required,
-        new PasswordValidatorDirective()
-      ]],
+      name: ['', UserScopes.forName(Validators.required)],
+      email: ['', UserScopes.forEmail(Validators.required)],
+      password: ['', UserScopes.forPassword(Validators.required)],
       confirmPassword: ['', [
         Validators.required,
         new ConfirmValidatorDirective('password', 'Password')

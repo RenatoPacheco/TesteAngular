@@ -10,7 +10,6 @@
           [required]="true"
           placeholder="complete with your name">
         </app-input-text>
-        <p class="fs-6">Output: {{ frmName }}</p>
       </div>
       <div class="mb-3">
         <app-input-text
@@ -22,7 +21,6 @@
           autocomplete="username"
           placeholder="complete with your email">
         </app-input-text>
-        <p class="fs-6">Output: {{ frmEmail }}</p>
       </div>
       <div class="mb-3">
         <app-input-text
@@ -33,7 +31,6 @@
           autocomplete="new-password"
           placeholder="complete with a password">
         </app-input-text>
-        <p class="fs-6">Output: {{ frmPassword }}</p>
       </div>
       <div class="mb-3">
         <app-input-text
@@ -44,10 +41,11 @@
           [required]="true"
           placeholder="Confirm the password">
         </app-input-text>
-        <p class="fs-6">Output: {{ frmConfirmPassword }}</p>
       </div>
     </fieldset>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button type="reset" (click)="reset()" class="btn btn-primary">Reset</button>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="reset" (click)="reset()"  class="btn btn-secondary">Reset</button>
+    </div>
   </form>
 </div>
