@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ErrorMessageService } from '@app/shared/services';
+import { ErrorMessageService, NotificationService } from '@app/shared/services';
 
 import { Guid } from 'guid-typescript';
 
@@ -22,7 +22,8 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   constructor(
     @Self() @Optional()
     private ngControl: NgControl,
-    private errorMessageService: ErrorMessageService
+    private errorMessageService: ErrorMessageService,
+    private notificationService: NotificationService,
   ) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
@@ -95,12 +96,12 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   public showError(): void {
     if (this.ngControl?.control) {
       const errors = this.ngControl.errors ?? null;
-      let error = '- No error';
       if (errors) {
-        error = this.errorMessageService.getErrorValidatorList(errors)
-          .reduce((acc, cur) => `${acc}- ${cur}\n`, '');
+        this.notificationService.clear();
+        this.errorMessageService.getErrorValidatorList(errors).forEach(error => {
+          this.notificationService.error(error);
+        });
       }
-      alert(error);
     }
   }
 
