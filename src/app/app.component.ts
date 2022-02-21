@@ -1,9 +1,9 @@
-import { ConfirmValidatorDirective } from './shared/directives/confirm-validator.directive';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { PasswordValidatorDirective } from './shared/directives';
-import { UserScopes } from './shared/models';
+import { UserScopes } from '@app/shared/models';
+import { NotificationService } from '@app/shared/services';
+import { ConfirmValidatorDirective } from '@app/shared/directives';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,7 @@ export class AppComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+    private notificationService: NotificationService
   ) {
     this.form = this.formBuilder.group({
       name: ['', UserScopes.forName(Validators.required)],
@@ -30,27 +31,12 @@ export class AppComponent {
 
   title = 'TesteAngular';
 
-  public get frmName(): string|null {
-    return this.form.get('name')?.value ?? null;
-  }
-
-  public get frmEmail(): string|null {
-    return this.form.get('email')?.value ?? null;
-  }
-
-  public get frmPassword(): string|null {
-    return this.form.get('password')?.value ?? null;
-  }
-
-  public get frmConfirmPassword(): string|null {
-    return this.form.get('confirmPassword')?.value ?? null;
-  };
-
   public submit(): void {
     this.form.markAllAsTouched();
   }
 
   public reset(): void {
+    this.notificationService.clear();
     this.form.reset();
   }
 }

@@ -1,9 +1,9 @@
 <label
+  class="form-label"
   [class.text-danger]="hasFeedbackError()"
   [class.text-success]="hasFeedbackSuccess()"
   [for]="id"
   *ngIf="hasLabel()"
-  class="form-label"
   [innerHtml]="label">
 </label>
 <input

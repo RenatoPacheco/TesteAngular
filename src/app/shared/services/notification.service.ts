@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { Injectable, NgZone } from '@angular/core';
+import { ActiveToast, ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -7,26 +7,108 @@ import { ToastrService } from 'ngx-toastr';
 export class NotificationService {
 
   constructor(
+    private zone: NgZone,
     private toastr: ToastrService
   ) { }
 
-  public success(message: string, title?: string) {
-    this.toastr.success(message, title);
+  /**
+   * show successful notification
+   * @param message the message to display
+   * @param title the title of the notification
+   * @returns
+   */
+  public success(message: string, title?: string): number {
+    let toastId: number  = 0;
+
+    this.zone.run(() => {
+      const result: ActiveToast<any> = this.toastr.success(message, title);
+      toastId = result.toastId;
+    });
+
+    return toastId;
   }
 
-  public error(message: string, title?: string) {
-    this.toastr.error(message, title);
+  /**
+   * show error notification
+   * @param message the message to display
+   * @param title the title of the notification
+   * @returns
+   */
+  public error(message: string, title?: string): number {
+    let toastId: number  = 0;
+
+    this.zone.run(() => {
+      const result: ActiveToast<any> = this.toastr.error(message, title);
+      toastId = result.toastId;
+    });
+
+    return toastId;
   }
 
-  public warning(message: string, title?: string) {
-    this.toastr.warning(message, title);
+  /**
+   * show warning notification
+   * @param message the message to display
+   * @param title the title of the notification
+   * @returns
+   */
+  public warning(message: string, title?: string): number {
+    let toastId: number  = 0;
+
+    this.zone.run(() => {
+      const result: ActiveToast<any> = this.toastr.warning(message, title);
+      toastId = result.toastId;
+    });
+
+    return toastId;
   }
 
-  public info(message: string, title?: string) {
-    this.toastr.info(message, title);
+  /**
+   * show info notification
+   * @param message the message to display
+   * @param title the title of the notification
+   * @returns
+   */
+  public info(message: string, title?: string): number {
+    let toastId: number  = 0;
+
+    this.zone.run(() => {
+      const result: ActiveToast<any> = this.toastr.info(message, title);
+      toastId = result.toastId;
+    });
+
+    return toastId;
   }
 
-  public clear(): void {
-    this.toastr.clear();
+  /**
+   * show notification
+   * @param message the message to display
+   * @param title the title of the notification
+   * @returns
+   */
+  public show(message: string, title?: string): number {
+    let toastId: number  = 0;
+
+    this.zone.run(() => {
+      const result: ActiveToast<any> = this.toastr.show(message, title);
+      toastId = result.toastId;
+    });
+
+    return toastId;
+  }
+
+  /**
+   * Remove all or a single toast by id
+   * @param id set the id of the notification to remove
+   */
+  public clear(id?: number): void {
+    this.zone.run(() => this.toastr.clear(id));
+  }
+
+  /**
+   * Remove and destroy a single notification by id
+   * @param id set the id of the notification to remove
+   */
+  public remove(id: number): void {
+    this.zone.run(() => this.toastr.remove(id));
   }
 }

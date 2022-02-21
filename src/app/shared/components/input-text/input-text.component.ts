@@ -23,7 +23,7 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
     @Self() @Optional()
     private ngControl: NgControl,
     private errorMessageService: ErrorMessageService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
@@ -94,14 +94,12 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   }
 
   public showError(): void {
-    if (this.ngControl?.control) {
-      const errors = this.ngControl.errors ?? null;
-      if (errors) {
-        this.notificationService.clear();
-        this.errorMessageService.getErrorValidatorList(errors).forEach(error => {
-          this.notificationService.error(error);
-        });
-      }
+    const errors = this.ngControl?.errors || null;
+    if (errors) {
+      this.notificationService.clear();
+      this.errorMessageService.getErrorValidatorList(errors).forEach(error => {
+        this.notificationService.error(error);
+      });
     }
   }
 
