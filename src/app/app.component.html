@@ -1,7 +1,12 @@
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="submit()">
     <fieldset>
-      <legend>Form</legend>
+      <legend>
+        <svg class="bi" width="32" height="32" fill="currentColor">
+          <use xlink:href="bootstrap-icons.svg#calculator"/>
+        </svg>
+        <span> Form </span>
+      </legend>
       <div class="mb-3">
         <app-input-text
           label="Name"
