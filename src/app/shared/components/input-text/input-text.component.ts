@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, forwardRef, Input, OnInit, Optional, Output, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ErrorMessageService, NotificationService } from '@app/shared/services';
+import { ErrorMessageService, GuidService, NotificationService } from '@app/shared/services';
 
 import { Guid } from 'guid-typescript';
 
@@ -22,6 +22,7 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   constructor(
     @Self() @Optional()
     private ngControl: NgControl,
+    private guidService: GuidService,
     private errorMessageService: ErrorMessageService,
     private notificationService: NotificationService
   ) {
@@ -72,7 +73,7 @@ export class InputTextComponent implements OnInit, ControlValueAccessor {
   };
   @Output() public valueChange = new EventEmitter<string>();
 
-  public readonly id: string = Guid.create().toString();
+  public readonly id: string = this.guidService.newGuid('input-text');
   public onChange = (_: any) => {}
   public onTouched = (_: any) => {}
 
